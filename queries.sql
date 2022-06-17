@@ -79,3 +79,35 @@ from animals A join owners O on A.owner_id = O.id
 group by O.full_name
 order by count(*) desc
 LIMIT 1;
+
+select count(distinct A.id) as number_of_animals
+from animals A join visits V on A.id = V.animals_id
+where V.vets_id = (select id from vets where name = 'Stephanie Mendez');
+
+select V.id, V.name, V.age, V.date_of_graduation, s.name as specialization
+from vets V left join specializations SP on V.id = SP.vets_id 
+left join species S on SP.species_id = S.id;
+
+select A.id, A.name, A.date_of_birth, A.escape_attempts, A.neutered, A.weight_kg 
+from animals A join visits V on A.id = V.animals_id
+where V.vets_id = (select id from vets where name = 'Stephanie Mendez') 
+and V.date_of_visits between '2020-4-1' and '2020-8-30';
+
+select A.id, A.name, A.date_of_birth, A.escape_attempts, A.neutered, A.weight_kg, count(*) as visits_number
+from animals A join visits V on A.id = V.animals_id
+group by A.id
+order by count(*) desc
+limit 1;
+
+select A.id, A.name, A.date_of_birth, A.escape_attempts, A.neutered, A.weight_kg 
+from animals A join visits V on A.id = V.animals_id
+where V.vets_id = (select id from vets where name = 'Maisy Smith')
+order by date_of_visits
+limit 1;
+
+select A.name, A.date_of_birth, A.escape_attempts, A.neutered, A.weight_kg, 
+V.name, V.age, V.date_of_graduation, VI.date_of_visits 
+from animals A join visits VI on A.id = VI.animals_id 
+join vets V on VI.vets_id = V.id
+order by VI.date_of_visits desc
+limit 1;
